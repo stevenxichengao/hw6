@@ -357,7 +357,7 @@ void HashTable<K,V,Prober,Hash,KEqual>::insert(const ItemType& p)
     HASH_INDEX_T h = this->probe(newP->item.first);
     if(h == this->npos) {
 					//	std::cout << "currentAlpha: " << currentAlpha << " resizeAlpha: " << resizeAlpha_<< std::endl;
-
+			delete newP;
 			throw std::logic_error("No free location");
 		}
     if(table_[h]==nullptr) {
@@ -366,7 +366,10 @@ void HashTable<K,V,Prober,Hash,KEqual>::insert(const ItemType& p)
 		  currentAlpha = (size_+nDeleted)/(double)CAPACITIES[mIndex_];
 		//	std::cout << "an item was inserted, size: " << size_ << " currentAlpha: " << currentAlpha << std::endl;
 		}
-    else table_[h]->item.second = newP->item.second;
+    else {
+			table_[h]->item.second = newP->item.second;
+			delete newP;
+		}
 }
 
 // To be completed
